@@ -1,0 +1,25 @@
+table
+{
+border-collapse:collapse;
+}
+table,th, td
+{
+border: 1px solid black;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.fa {
+    width: 1em;
+    text-align: center;
+}
+
+th.cell-stat {
+    width: 6em;
+}
+
+th.cell-stat-2x {
+    width: 14em;
+}

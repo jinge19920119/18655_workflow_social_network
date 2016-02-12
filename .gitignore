@@ -1,0 +1,9 @@
+.DS_Store
+*.class
+*.cache
+ApacheCMDA-Frontend/target/
+ApacheCMDA-Backend/target/
+ApacheCMDA-Backend/logs/
+ApacheCMDA-Frontend/logs/
+ApacheCMDA-Frontend/project/target/*
+ApacheCMDA-Backend/project/target/*

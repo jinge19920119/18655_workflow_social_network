@@ -1,0 +1,49 @@
+@*******************************************************************************
+ * Licensed to the Apache Software Foundation (ASF) under one or more          *
+ * contributor license agreements.  See the NOTICE file distributed with       *
+ * this work for additional information regarding copyright ownership.         *
+ * The ASF licenses this file to You under the Apache License, Version 2.0     *
+ * (the "License"); you may not use this file except in compliance with        *
+ * the License.  You may obtain a copy of the License at                       *
+ *                                                                             *
+ *    http://www.apache.org/licenses/LICENSE-2.0                               *
+ *                                                                             *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.                                              *
+ *******************************************************************************@ 
+@(user: metadata.User)
+
+@import helper._ 
+
+@main("User Profile") {
+	<h1>User Profile</h1>
+	<h3>User ID</h3>
+	<p>@user.getId()</p>
+	<h3>User Name</h3>
+	<p>@user.getUserName()</p>
+	<h3>Name</h3>
+	<p>@user.getFirstName() @user.getLastName()</p>
+	<h3>Middle Initial</h3>
+	<p>@user.getMiddleInitial</p>
+	<h3>Affiliation</h3>
+	<p>@user.getAffiliation</p>
+	<h3>Title</h3>
+	<p>@user.getTitle()</p>
+	<h3>Email</h3>
+	<p>@user.getEmail()</p>
+	<h3>Mailing Address</h3>
+	<p>@user.getMailingAddress</p>
+	<h3>Phone Number</h3>
+	<p>@user.getPhoneNumber</p>
+	<h3>Fax Number</h3>
+	<p>@user.getFaxNumber</p>
+	<h3>Research Fields</h3>
+	<p>@user.getResearchFields</p>
+	<h3>Highest Degree</h3>
+	<p>@user.getHighestDegree</p>
+	
+	
+}

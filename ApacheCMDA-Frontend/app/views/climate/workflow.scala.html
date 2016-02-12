@@ -1,0 +1,219 @@
+@*******************************************************************************
+ * Licensed to the Apache Software Foundation (ASF) under one or more          *
+ * contributor license agreements.  See the NOTICE file distributed with       *
+ * this work for additional information regarding copyright ownership.         *
+ * The ASF licenses this file to You under the Apache License, Version 2.0     *
+ * (the "License"); you may not use this file except in compliance with        *
+ * the License.  You may obtain a copy of the License at                       *
+ *                                                                             *
+ *    http://www.apache.org/licenses/LICENSE-2.0                               *
+ *                                                                             *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.                                              *
+ *******************************************************************************@ 
+@(workflow: metadata.Workflow, comments: List[metadata.Comment])
+
+@import helper._ 
+
+@main("Workflow") {
+	<div class="container">
+
+        <h1>@workflow.getName()</h1>
+
+        <p class="lead">
+            by <a href="#">@workflow.getAuthor()</a>
+        </p>
+        <p>@workflow.getCreateTime()</p>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <img class="img-responsive" src='@{routes.WorkflowController.getImage(workflow.getId())}' alt="">
+
+                <hr>
+
+                <p class="lead">@workflow.getName()</p>
+                <p>@workflow.getPurpose()</p>
+                
+                <hr>
+
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse1">
+                                  Inputs
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapse1" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p>@workflow.getInput()</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse3">
+                                  Outputs
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapse3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                            	<p>@workflow.getOutput()</p>
+                            </div>
+                        </div>
+
+	                    <div class="panel panel-default">
+	                        <div class="panel-heading">
+	                            <h4 class="panel-title">
+	                                <a data-toggle="collapse" href="#collapse2">
+	                                Component tasks
+	                                </a>
+	                            </h4>
+	
+	                        </div>
+	                        <div id="collapse2" class="panel-collapse collapse">
+	                            <div class="panel-body">
+	                                <table class="table">
+	                                    <tbody>
+	                                    	@for(str <- workflow.getClimateServiceSetList()){
+	                                        <tr>
+	                                            <td>@str</td>
+	                                        </tr>
+	                                        }
+	                                    </tbody>
+	                                </table>
+	                            </div>
+	                        </div>
+	                    </div>  
+
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="well">
+                    <h4>Leave a Comment:</h4>
+                    <form method="post" action="/workflow/newComment" role="form">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" name="comment"></textarea>
+                            <input type="hidden" name="replytoid" value="@workflow.getAuthorId()">
+                            <input type="hidden" name="workflowid" value="@workflow.getId()">
+                            <input type="hidden" name="username" value="@session.get("userName")">
+                            <input type="hidden" name="userid" value="@session.get("id")">
+                            <input type="hidden" name="replytoname" value="@workflow.getAuthor()">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+
+                <hr>
+
+                @for(oneComment <- comments){
+                @if(oneComment.getId() == workflow.getAnswerId()) {
+                	<div style="background: rgba(204, 255, 229, 0.3);" class="well">
+                	<span class="glyphicon glyphicon-star-empty"></span> Answer
+        			<a href="@{"/workflow/markAnswer/"+workflow.getId()+"/"+oneComment.getId()}" class="btn btn-default">
+						<span class="glyphicon glyphicon-remove"></span> Cancel
+					</a>
+                } else {
+                	<div class="well">
+                }
+                    <h4> @oneComment.getUsername()
+                    	<small>@oneComment.getDate()</small>
+                        @if(workflow.getAnswerId() == 0 && workflow.getIsQuestion() == 1 && session.get("id") == String.valueOf(workflow.getAuthorId())) {                      	
+						    <a href="@{"/workflow/markAnswer/"+workflow.getId()+"/"+oneComment.getId()}" class="btn btn-success btn-lg">
+						      <span class="glyphicon glyphicon-ok"></span> Mark Answer
+						    </a>
+                        }
+                   	</h4>
+                    <p>  Reply to @oneComment.getReplytoname(): <br>@oneComment.getComment() </p>
+
+
+                    <button class="btn btn-primary" data-toggle="collapse" data-target="@{"#" + oneComment.getId()}">Reply</button>
+
+                    <div id="@oneComment.getId()" class="collapse">
+                        <h4>Reply: </h4>
+                        <form method="post" action="/workflow/newComment" role="form">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3" name="comment"></textarea>
+                                <input type="hidden" name="replytoid" value="@oneComment.getUserid()">
+                                <input type="hidden" name="workflowid" value="@workflow.getId()">
+                                <input type="hidden" name="username" value="@session.get("userName")">
+                                <input type="hidden" name="userid" value="@session.get("id")">
+                                <input type="hidden" name="replytoname" value="@oneComment.getUsername()">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+
+                </div>
+                }
+
+
+            </div> <!-- cols-8 end -->
+
+            <div class="col-md-4">
+
+                <div class="well">
+                    <h4>Contributors</h4>
+                    <p>@workflow.getContributors()</p>
+                </div>
+
+                <div class="well">
+                    <h4>Tags</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Tags</a>
+                        </li>
+                        <li><a href="#">Tags</a>
+                        </li>
+                        <li><a href="#">Tags</a>
+                        </li>
+                        <li><a href="#">Tags</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="well">
+                    <h4>Associated datasets</h4>
+                    <ul class="list-unstyled">
+                    	@for(str <- workflow.getDatasetList()){
+                        <li>@str</a>
+                        </li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="well">
+                    <h4>Links and instructions</h4>
+                    <p>@workflow.getLinksInstructions()</p>
+                </div>
+
+                <div class="well">
+                    <h4>Attributions</h4>
+                        <ul class="list-unstyled">
+                        	@for(str <- workflow.getOtherWorkflowsList()){
+                            <li>@str
+                            </li>
+                            }
+                        </ul>
+                </div>
+
+            </div>
+
+        </div> <!-- row end-->
+        <hr>
+    </div>
+	
+
+}

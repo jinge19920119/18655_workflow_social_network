@@ -1,0 +1,15 @@
+docker run -it -p 9234:9000 -v /Users/zhongchuan/Documents/Workspace/18655Project/SOC-Fall-2015-Team7-Lead-Huanwen-Chen:/home/SOC-Fall-2015-Team7-Lead-Huanwen-Chen cmusvsc/apachecmda:1.0
+
+service mysql start
+screen
+cd /home/SOC-Fall-2015-Team7-Lead-Huanwen-Chen/ApacheCMDA-Backend/
+./activator "run 9034"
+cd /home/SOC-Fall-2015-Team7-Lead-Huanwen-Chen/ApacheCMDA-Frontend/
+./activator run 
+
+http://localhost:9234/
+
+git config --global user.name "zhongchx"
+git config --global user.email "zhongchx@andrew.cmu.edu"
+
+https://github.com/cmusv-sc/SOC-Fall-2015-Team7-Lead-Huanwen-Chen.git
